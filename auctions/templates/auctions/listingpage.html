@@ -1,0 +1,66 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{ item.auction }}</h2>
+
+    <tr>
+		<td><b>Descripción:</b> {{ item.description }}</td><br>
+		<td><b>Oferta:</b> {{ ultimaoferta }}</td><br>
+		<td><b>Categoría:</b> {{ item.categoria }}</td><br>
+		{% if item.img %} <td><img src="{{item.img}}" style="position: absolute;height:200px;width:200px;margin-left:70%;"></td> {% endif %}
+
+		{% if user.is_authenticated %}
+
+
+			<p>{{message}}</p>
+
+
+			{% if seguimiento is True %}
+			<a href="{% url 'watchlist' item.id %}">Desagregar item de mi lista de seguimiento</a>
+			{% else %}
+			<a href="{% url 'watchlist' item.id %}">Agregar item a mi lista de seguimiento</a>
+			{% endif %}
+
+
+			{% if owner is True %}
+				{% if status is True %}
+
+
+				<form action="{% url 'bid' item.id %}" method="post">
+					{% csrf_token %}
+					{{ bidform }}
+					<input type="submit" value="Pujar">
+				</form>
+
+				<a href="{% url 'status' item.id %}">Cerrar subasta</a>
+				{% else %}
+				<a href="{% url 'status' item.id %}">Abrir subasta</a>
+				{% endif %}
+			{% endif %}
+
+			{% if winner_message %}
+				{{ winner_message }}
+			{% endif %}
+
+			{% if True %}
+			<form action="{% url 'comment' item.id %}" method="post">
+				{% csrf_token %}
+				{{ comment_form }}
+				<input type="submit" value="Comentar">
+			</form>
+			{% endif %}
+
+
+
+		{% endif %}
+
+		{% if comentarios %}
+		<ul style="margin-top:30px;">
+			<b>Comentarios:</b>
+			{% for c in comentarios %}
+				<li>{{ c }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+{% endblock %}

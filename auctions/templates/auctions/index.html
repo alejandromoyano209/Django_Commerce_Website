@@ -1,0 +1,20 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    {% for x in auctions %}
+
+        <div class="oferta">
+        	<tr>
+        		 {% if x.img %} <img src="{{x.img}}"> {% endif %}<td><a href="/listingpage/{{x.auction}}"> {{x.auction}}</td></a> | Descripción: <td>{{x.description}}</td> | Ultima oferta: <td>{{x.oferta}}</td> | Categoría: <td>{{x.categoria}}</td>
+        	</tr>
+    	</div>
+
+    	{% empty %}
+    	<div>No Auctions</div>
+
+    {% endfor %}
+
+
+{% endblock %}
